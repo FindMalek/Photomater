@@ -22,9 +22,24 @@ def main():
     with Session(r"C:\Users\malek\Downloads\Daily Plan (Artboards).psd", action="open") as ps:
         ps.echo(ps.active_document.name)
         artboards = ps.active_document.layerSets
-
+        # Loop through these artboards only: Lundi, Mardi, Mercredi, Jeudi, Vendredi, Samedi, Dimanche (Dimanche may not exist in the PSD, sometimes it does and sometimes it doesn't)
         for artboard in artboards:
-            search_layers(artboard, 'Date - ')
+            if artboard.name in ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche']:
+                # Now search for the folders named 'Date' within these artboards and then search for the folder named 'For texture' within these folders you will find the text layers
+                for layer in artboard.layers:
+                    if layer.name == 'Date':
+                        for layer in layer.layers:
+                            if layer.name == 'Text':
+                                print(layer)
+                                for layer in layer.layers:
+                                    if 'killoxs' in layer.name:
+                                        print(layer)
+                                        for layer in layer.layers:
+                                            if layer.name == 'For texture':
+                                                for layer in layer.layers:
+                                                    if 'Date - ' in layer.name:
+                                                        print(f"Found {layer.name}")
+
 
 if __name__ == '__main__':
     main()

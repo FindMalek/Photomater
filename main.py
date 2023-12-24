@@ -1,45 +1,49 @@
 from photoshop import Session
 
-def search_layers(layer_set, target_name):
-    """
-    Recursively searches for layers within a layer set.
-    Prints the text of layers matching the target name format.
-    """
-    print(f"Searching {layer_set.name}...")
+def find_layer_recursive(layer_set, target_path, current_path=[]):
+    if not target_path:
+        return None
+
+    next_layer_name = target_path[1]
     for layer in layer_set.layers:
-        # Check if layer is a group (layer set)
-        if layer.typename == 'LayerSet':
-            search_layers(layer, target_name)
-        elif target_name in layer.name:
-            try:
-                if layer.kind == 'LayerKind.TEXT':
-                    print(f"Layer: {layer.name}, Text: {layer.textItem.contents}")
-            except AttributeError:
-                # Not a text layer, ignore
-                pass
+        new_path = current_path + [layer.name]
+        if layer.name == next_layer_name:
+            print(f" -> Found layer: {layer.typename}, ", len(target_path))
+            if len(target_path) == 2:
+                return layer
+            
+            elif layer.typename == 'LayerSet':
+                return find_layer_recursive(layer, target_path[1:], current_path=new_path)
+    
+    return None
 
 def main():
-    with Session(r"C:\Users\malek\Downloads\Daily Plan (Artboards).psd", action="open") as ps:
+    # C:\Users\malek\Downloads\Daily Plan (Artboards).psd
+    # psd_path = input("Enter the path to the PSD file: ").strip()
+    psd_path = "C:/Users/malek/Downloads/Daily Plan (Artboards).psd"
+
+    #layer_path_str = input("Enter the path to the target text layer (separated by '/'): ").strip()
+    layer_path_str = "Dimanche/Date/Text/For texture/Date - Dimanche (EditText)"
+
+    # Split the layer path into components
+    layer_path = layer_path_str.split('/')
+
+    with Session(psd_path, action="open") as ps:
         ps.echo(ps.active_document.name)
         artboards = ps.active_document.layerSets
-        # Loop through these artboards only: Lundi, Mardi, Mercredi, Jeudi, Vendredi, Samedi, Dimanche (Dimanche may not exist in the PSD, sometimes it does and sometimes it doesn't)
-        for artboard in artboards:
-            if artboard.name in ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche']:
-                # Now search for the folders named 'Date' within these artboards and then search for the folder named 'For texture' within these folders you will find the text layers
-                for layer in artboard.layers:
-                    if layer.name == 'Date':
-                        for layer in layer.layers:
-                            if layer.name == 'Text':
-                                print(layer)
-                                for layer in layer.layers:
-                                    if 'killoxs' in layer.name:
-                                        print(layer)
-                                        for layer in layer.layers:
-                                            if layer.name == 'For texture':
-                                                for layer in layer.layers:
-                                                    if 'Date - ' in layer.name:
-                                                        print(f"Found {layer.name}")
 
+        # Use a set for faster lookups
+        target_artboards = {"Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"}
+
+        # Iterate through each artboard and check if its name is in target_artboards
+        for artboard in artboards:
+            if artboard.name in target_artboards:
+                print(f"Searching in artboard: {artboard.name}")
+                target_layer = find_layer_recursive(artboard, layer_path)
+                if target_layer and target_layer.kind == ps.LayerKind.TextLayer:
+                    print(f" -> Found: {target_layer.name}, Text: {target_layer.textItem.contents}")
+                    target_layer.textItem.contents = "00/00 "
+                    break
 
 if __name__ == '__main__':
     main()

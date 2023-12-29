@@ -209,6 +209,7 @@ photoshop_automation/
 │   │   ├── add_client.py           # Command for adding a new client
 │   │   ├── edit_client.py          # Command for editing client details
 │   │   ├── remove_client.py        # Command for removing a client
+│   │   ├── update_client.py        # Command for saving & exporting the PSD and output files
 │   │   └── list_clients.py         # Command for listing all clients
 │   │
 │   └── main_cli.py                 # Entry point for the CLI application

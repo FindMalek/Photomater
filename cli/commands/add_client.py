@@ -13,7 +13,7 @@ def add_client(name: str, file_name: str = typer.Option(None, help="Name of the 
     client_controller = ClientController()
     files_data = []
 
-    if file_name and psd_path and export_path and google_drive_path and layer_path and supported_artboards:
+    if file_name and psd_path and export_path and google_drive_path and layer_path:
         file_data = {
             'name': file_name,
             'paths': {
@@ -23,7 +23,7 @@ def add_client(name: str, file_name: str = typer.Option(None, help="Name of the 
             },
             'layer_path': layer_path,
             'artboards': {
-                'boards': supported_artboards.split(',')
+                'boards': supported_artboards.split(',') if supported_artboards else []
             }
         }
         files_data.append(file_data)

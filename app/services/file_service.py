@@ -17,7 +17,19 @@ class FileService:
         with open(self.file_path, 'w', encoding='utf-8') as file:
             json.dump(data, file, indent=4)
 
-    def client_to_dict(self, client: Client):
+    def client_to_dict(self, client: Client, update=False):
+        if update:
+            return {
+                "name": client.name,
+                "files": [
+                    {
+                        "name": file_data.get('name', ''),
+                        "paths": file_data.get('paths', {}),
+                        "layer_path": file_data.get('layer_path', ''),
+                        "artboards": file_data.get('artboards', {})
+                    } for file_data in client.files
+                ]
+            }
         return {
             "name": client.name,
             "files": [
@@ -41,6 +53,16 @@ class FileService:
         for client in clients:
             if client['name'] == name:
                 client.update(updated_data)
+                break
+        self.write_json_file(clients)
+
+    def update_client(self, updated_client: Client):
+        clients = self.read_json_file()
+        client_dict = self.client_to_dict(updated_client, update=True)
+
+        for client in clients:
+            if client['name'] == updated_client.name:
+                client.update(client_dict)
                 break
         self.write_json_file(clients)
 

@@ -156,7 +156,7 @@ Here is an example of a client data structure:
             "layer_path": "Date - (Lundi|Mardi|Mercredi|Jeudi|Vendredi|Samedi|Dimanche) (EditText)",
             "artboards": {
                 "Supported": true,
-                "boards": ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"]
+                "Boards": ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"]
             }
         },
         {
@@ -169,7 +169,7 @@ Here is an example of a client data structure:
             "layer_path": "Date - Weekly (EditText)",
             "artboards": {
                 "Supported": false,
-                "boards": []
+                "Boards": []
             }
         }
     ]

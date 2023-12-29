@@ -9,7 +9,7 @@ class FileDetails:
         self.layer_path = layer_path
         self.artboards = {
             "Supported": True if supported_artboards else False,
-            "boards": supported_artboards
+            "Boards": supported_artboards
         }
 
 class Client:

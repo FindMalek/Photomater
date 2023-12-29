@@ -30,10 +30,5 @@ def add_client(name: str, file_name: str = typer.Option(None, help="Name of the 
 
     client_controller.add_client(name, files_data if files_data else None)
 
-    if files_data:
-        typer.echo(f"Client '{name}' with file '{file_name}' added successfully.")
-    else:
-        typer.echo(f"Client '{name}' added successfully.")
-
 if __name__ == "__main__":
     typer.run(add_client)

@@ -1,25 +1,25 @@
-# Photomater
+# **Photomater**
 
 Photomater is a Python-based automation tool designed to streamline the process of updating text layers in Adobe Photoshop files. This tool is now enhanced with a rich command-line interface (CLI), making it even more user-friendly and efficient for graphic designers.
 
-## Features
+## **Features**
 
 - Automated updating of text layers in Photoshop files, tailored for weekly dates.
 - Ability to handle multiple files and artboards, customizable for different clients and date formats.
 - A rich CLI for easy interaction, supporting various commands for managing client data and automation tasks.
 - Extendable architecture, allowing for additional Photoshop automation functionalities.
 
-## Getting Started
+## **Getting Started**
 
 These instructions will guide you in setting up and using Photomater on your local machine.
 
-### Prerequisites
+### **Prerequisites**
 
 - Adobe Photoshop (with scripting support).
 - Python 3.x.
 - Basic understanding of Python and JavaScript (for Adobe Photoshop scripting).
 
-### Installation
+### **Installation**
 
 Clone the repository to your local machine:
 
@@ -33,7 +33,7 @@ Install any necessary Python dependencies:
 pip install -r requirements.txt
 ```
 
-### Setting Up
+### **Setting Up**
 
 1. **Initial Configuration:**
 Run python main.py to start the CLI. If the data/client_data.json file is empty or does not exist, the CLI will guide you through adding a new client with file paths and configurations.
@@ -47,20 +47,29 @@ Photomater's CLI allows you to perform various actions, such as updating text la
 python main.py --help
 ```
 
-### CLI Commands
+### **CLI Commands**
 Photomater's CLI offers a variety of commands to manage client data, update Photoshop files, and export artboards. Here's a detailed overview of each command and its arguments:
 
 #### 1. Add Client
 Add a new client with their specific Photoshop file settings.
 * Command: `add-client`
-* Arguments:
+* Base Arguments:
    * `--name` (required): Name of the client.
-   * `--file_location` (required): Full path to the client's PSD file.
-   * `--export_location` (required): Path where exported files will be saved.
-   * `--artboards` (required): Comma-separated names of the artboards to be processed.
-   * `--layer_path` (required): Path to the target text layer within the Photoshop file.
+* Arguments:
+   * `--file-name`: Name of the file.
+   * `--psd-path`: Full path to the client's PSD file.
+   * `--export-path`: Path where exported files will be saved.
+   * `--google-drive-path`: Google Drive path for the file.
+   * `--layer-path`: Path to the target text layer within the Photoshop file using regex.
+   * `--supported-artboards`: Comma-separated names of the artboards to be processed.
+
+**Adding a Client Without Files**
 ```bash
-python main.py add-client --name "Client1" --file_location "/path/to/psd" --export_location "/path/to/export" --artboards "Artboard1,Artboard2" --layer_path "path/to/layer"
+python main.py add-client "Client1"
+```
+**Adding a Client Without Files**
+```bash
+python main.py add-client "Client1" --file-name "File1" --psd-path "/path/to/psd1" --export-path "/path/to/export1" --google-drive-path "/path/to/drive1" --layer-path "Date - (Lundi|Mardi|Mercredi|Jeudi|Vendredi|Samedi|Dimanche) (EditText)" --supported-artboards "Artboard1,Artboard2"
 ```
 
 #### 2. Edit Client
@@ -107,10 +116,70 @@ Or for a specific file:
 ```bash
 python main.py update --client "Client1" --file "FileName" --save
 ```
-These commands provide a comprehensive interface for managing and automating tasks in Photoshop files, making Photomater a powerful tool for graphic designers.
+These commands provide a comprehensive interface for managing and automating tasks in Photoshop files, making Photomater a powerful tool for graphic designers. For more detailed information on each command, use the `--help` flag.
+
+### **Client Data Structure**
+Photomater manages client data with a comprehensive structure to accommodate various project requirements and workflows. Here is an overview of the client data structure:
+
+#### Client Object
+Each client object consists of a name and a list of files associated with that client.
+
+   * `name`: The name of the client.
+   * `files`: An array of File objects.
+
+#### File Object
+Each file object within a client includes detailed information about the file, paths, artboards, and the text layer to be updated.
+
+   * `name`: The name of the file or project.
+   * `paths`: An object containing paths related to the file.
+      * `PSD`: The full path to the Photoshop (.psd) file.
+      * `Export`: A list of the names of the artboards to be processed.
+      * `Google Drive`: A list of the names of the artboards to be processed.
+   * `layer_path`: The regular expression `Date - (Lundi|Mardi|Mercredi|Jeudi|Vendredi|Samedi|Dimanche) (EditText)` is used. This regex will match strings like `Date - Lundi (EditText)`, `Date - Mardi (EditText)`, etc., where the day of the week is one of the specified artboard names.
+   * `artboards`: A list of the names of the artboards to be processed.
+      * `Supported`: A list of the names of the artboards to be processed.
+      * `boards`: A list of the names of the artboards to be processed.
+
+#### Example
+Here is an example of a client data structure:
+```json
+{
+    "name": "MoveU",
+    "files": [
+        {
+            "name": "Daily Plan",
+            "paths": {
+                "PSD": "/path/to/project1.psd",
+                "Export": "/path/to/export/project1",
+                "Google Drive": "https://drive.google.com/drive/folders/project1"
+            },
+            "layer_path": "Date - (Lundi|Mardi|Mercredi|Jeudi|Vendredi|Samedi|Dimanche) (EditText)",
+            "artboards": {
+                "Supported": true,
+                "boards": ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"]
+            }
+        },
+        {
+            "name": "Weekly Plan",
+            "paths": {
+                "PSD": "/path/to/project2.psd",
+                "Export": "/path/to/export/project2",
+                "Google Drive": "https://drive.google.com/drive/folders/project2"
+            },
+            "layer_path": "Date - Weekly (EditText)",
+            "artboards": {
+                "Supported": false,
+                "boards": []
+            }
+        }
+    ]
+}
+```
+This structure provides flexibility for managing different types of projects and their specific requirements. It is crucial to maintain this format for the application to function correctly.
 
 
-### Project Structure
+
+### **Project Structure**
 The project is organized into several directories:
 
 ```
@@ -158,21 +227,3 @@ photoshop_automation/
 * **`/scripts`** - JavaScript scripts for Photoshop.
 * **`main.py`** - Main script to run the CLI application.
 * **`requirements.txt`** -  Required Python dependencies.
-
-### Usage
-Photomater can be used through its rich CLI. Here are some example commands:
-
-* **Add a new client:**
-```bash
-python main.py add-client --name "Client1" --file_location "/path/to/psd" --export_location "/path/to/export" --artboards "Artboard1,Artboard2" --layer_path "path/to/layer"
-```
-* **Update text layers and export artboards:**
-```bash
-python main.py --client "Client1" --all-files --export
-```
-* **Update text layers in a specific file:**
-```bash
-python main.py --client "Client1" --file "FileName" --save
-```
-
-For more detailed information on each command, use the `--help` flag.

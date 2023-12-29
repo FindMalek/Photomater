@@ -3,9 +3,6 @@ import sys
 from cli.main_cli import app as cli_app
 
 def main():
-    """
-    Entry point for the Photomater application.
-    """
     if len(sys.argv) > 1:
         cli_app()
 

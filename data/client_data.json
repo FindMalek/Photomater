@@ -1,0 +1,52 @@
+[
+    {
+        "name": "Client1",
+        "files": []
+    },
+    {
+        "name": "Client133",
+        "files": []
+    },
+    {
+        "name": "Cdlient1",
+        "files": [
+            {
+                "name": "File1",
+                "paths": {
+                    "PSD": "/path/to/psd1",
+                    "Export": "/path/to/export1",
+                    "Google Drive": "/path/to/drive1"
+                },
+                "layer_path": "Date - (Lundi|Mardi|Mercredi|Jeudi|Vendredi|Samedi|Dimanche) (EditText)",
+                "artboards": {
+                    "Supported": true,
+                    "boards": [
+                        "Artboard1",
+                        "Artboard2"
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "name": "Client1",
+        "files": [
+            {
+                "name": "File1",
+                "paths": {
+                    "PSD": "/path/to/psd1",
+                    "Export": "/path/to/export1",
+                    "Google Drive": "/path/to/drive1"
+                },
+                "layer_path": "Date - (Lundi|Mardi|Mercredi|Jeudi|Vendredi|Samedi|Dimanche) (EditText)",
+                "artboards": {
+                    "Supported": true,
+                    "boards": [
+                        "Artboard1",
+                        "Artboard2"
+                    ]
+                }
+            }
+        ]
+    }
+]

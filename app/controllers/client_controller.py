@@ -17,6 +17,9 @@ class ClientController:
                     show_error_message(f"File name '{file_data['name']}' already exists in client '{name}'.")
                     return  
                 else:
+                    if file_data['artboards']['boards']:
+                        file_data['layer_path'] = file_data['layer_path'].replace("*", "(" + "|".join(file_data['artboards']['boards']) + ")")
+
                     new_file = FileDetails(
                         name=file_data['name'],
                         psd_path=file_data['paths']['PSD'],

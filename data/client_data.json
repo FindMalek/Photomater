@@ -1,0 +1,49 @@
+[
+    {
+        "name": "fclient1",
+        "files": [
+            {
+                "name": "fFile1f",
+                "paths": {
+                    "PSD": "/path/to/psd1",
+                    "Export": "/path/to/export1",
+                    "Google Drive": "/path/to/drive1"
+                },
+                "layer_path": "Date - (Lundi|Mardi|Mercredi|Jeudi|Vendredi|Samedi|Dimanche) (EditText)",
+                "artboards": {
+                    "Supported": false,
+                    "Boards": []
+                }
+            },
+            {
+                "name": "feFile1f",
+                "paths": {
+                    "PSD": "/path/to/psd1",
+                    "Export": "/path/to/export1",
+                    "Google Drive": "/path/to/drive1"
+                },
+                "layer_path": "Date - (Artboard1|Artboard2) (EditText)",
+                "artboards": {
+                    "Supported": true,
+                    "Boards": [
+                        "Artboard1",
+                        "Artboard2"
+                    ]
+                }
+            },
+            {
+                "name": "fe",
+                "paths": {
+                    "PSD": "/path/to/psd1",
+                    "Export": "/path/to/export1",
+                    "Google Drive": "/path/to/drive1"
+                },
+                "layer_path": "Date - Hi (EditText)",
+                "artboards": {
+                    "Supported": false,
+                    "Boards": []
+                }
+            }
+        ]
+    }
+]

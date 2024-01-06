@@ -63,6 +63,26 @@ class ClientController:
     def list_clients(self):
         # Logic to list all clients
         return self.file_service.get_all_clients()
+    
+    def update_file(self, client_name, file_name, save=False, export=False):
+        # Logic to update a file
+        client_data = self.file_service.get_client(client_name)
+        if client_data:
+            # Call PhotoshopController to perform updates
+            self.photoshop_controller.update_text_layers(client_data, file_name, save, export)
+            return "Update process completed."
+        else:
+            return "Client not found."
+        
+    def export_file(self, client_name, file_name):
+        # Logic to export a file
+        client_data = self.file_service.get_client(client_name)
+        if client_data:
+            # Call PhotoshopController to perform updates
+            self.photoshop_controller.export_artboards(client_data, file_name)
+            return "Export process completed."
+        else:
+            return "Client not found."
 
     def update_client_files(self, client_name, all_files=False, specific_file=None, save=False, export=False):
         client_data = self.file_service.get_client(client_name)

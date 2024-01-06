@@ -100,22 +100,29 @@ List all clients currently stored in the system.
 ```bash
 python main.py list-clients
 ```
-#### 5. Update and Export
-Update text layers in Photoshop files and optionally export artboards.
+
+#### 5. Update File
+Update text layers in Photoshop file, and then saves the Photoshop file.
 * Command: `update`
 * Arguments:
    * `--client` (required): Name of the client.
-   * `--all_files` (optional): Flag to process all files for the client.
+   * `--all-files` (optional): Flag to process all files for the client.
    * `--file` (optional): Specify a single file name to process.
-   * `--save` (optional): Flag to save changes to the PSD file.
-   * `--export` (optional): Flag to export artboards after updating.
 ```bash
-python main.py update --client "Client1" --all-files --export
+python main.py update --client "Client1" --file "FileName"
 ```
-Or for a specific file:
+
+#### 6. Export File
+Update text layers in Photoshop file, and then saves and exports the Photoshop file.
+* Command: `export`
+* Arguments:
+   * `--client` (required): Name of the client.
+   * `--all-files` (optional): Flag to process all files for the client.
+   * `--file` (optional): Specify a single file name to process.
 ```bash
-python main.py update --client "Client1" --file "FileName" --save
+python main.py export --client "Client1" --all-files
 ```
+
 These commands provide a comprehensive interface for managing and automating tasks in Photoshop files, making Photomater a powerful tool for graphic designers. For more detailed information on each command, use the `--help` flag.
 
 ### **Client Data Structure**
@@ -183,7 +190,7 @@ This structure provides flexibility for managing different types of projects and
 The project is organized into several directories:
 
 ```
-photoshop_automation/
+Photomater/
 │
 ├── app/                            # Main application code
 │   ├── controllers/                # Controllers for handling business logic
@@ -198,6 +205,7 @@ photoshop_automation/
 │   │   └── file_service.py         # File handling, read/write JSON, etc.
 │   │
 │   └── utils/                      # Utility functions and constants
+│       ├── artboard_support.py     # Utilities for the artboards supported by a given file
 │       ├── constants.py            # Constants used across the application
 │       └── cli_utils.py            # Utilities for CLI styling and interaction
 │
@@ -209,8 +217,9 @@ photoshop_automation/
 │   │   ├── add_client.py           # Command for adding a new client
 │   │   ├── edit_client.py          # Command for editing client details
 │   │   ├── remove_client.py        # Command for removing a client
-│   │   ├── update_client.py        # Command for saving & exporting the PSD and output files
-│   │   └── list_clients.py         # Command for listing all clients
+│   │   ├── list_clients.py         # Command for listing all clients
+│   │   ├── update_file.py          # Command for saving the PSD and output files
+│   │   └── export_file.py          # Command for saving & exporting the PSD and output files
 │   │
 │   └── main_cli.py                 # Entry point for the CLI application
 │

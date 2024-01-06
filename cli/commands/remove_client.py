@@ -1,7 +1,7 @@
 import typer
 from app.controllers.client_controller import ClientController
 
-def remove_client(name: str):
+def remove_client(name: str = typer.Option(..., prompt=True, help="Name of the client.")):
     """
     Removes an existing client from the system.
     """

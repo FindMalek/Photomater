@@ -1,7 +1,8 @@
 import typer
 from app.controllers.client_controller import ClientController
 
-def add_client(name: str, file_name: str = typer.Option(None, help="Name of the file."), 
+def add_client(name: str = typer.Option(..., prompt=True, help="Name of the client."),
+               file_name: str = typer.Option(None, help="Name of the file."), 
                psd_path: str = typer.Option(None, help="Full path to the client's PSD file."), 
                export_path: str = typer.Option(None, help="Path where exported files will be saved."), 
                google_drive_path: str = typer.Option(None, help="Google Drive path for the file."), 

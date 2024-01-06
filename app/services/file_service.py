@@ -71,5 +71,22 @@ class FileService:
         clients = [client for client in clients if client['name'] != name]
         self.write_json_file(clients)
 
+    def get_client(self, name):
+        clients = self.read_json_file()
+        client_found = next((client for client in clients if client['name'].lower() == name.lower()), None)
+        return client_found
+
     def get_all_clients(self):
         return self.read_json_file()
+    
+    def get_client_file(self, name, file_name):
+        client = self.get_client(name)
+        if client:
+            files = client['files']
+            file_found = next((file for file in files if file['name'].lower() == file_name.lower()), None)
+            return file_found
+        return None
+    
+    def get_client_files(self, name):
+        client = self.get_client(name)
+        return client['files'] if client else None

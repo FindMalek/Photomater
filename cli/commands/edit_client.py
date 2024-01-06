@@ -1,7 +1,12 @@
 import typer
 from app.controllers.client_controller import ClientController
 
-def edit_client(name: str, new_name: str = None, new_file_location: str = None, new_export_location: str = None, new_artboards: str = None, new_layer_path: str = None):
+def edit_client(name: str = typer.Option(..., prompt=True, help="Name of the client."),
+                new_name: str = None,
+                new_file_location: str = None,
+                new_export_location: str = None,
+                new_artboards: str = None,
+                new_layer_path: str = None):
     """
     Edits an existing client's details.
     """

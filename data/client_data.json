@@ -26,6 +26,28 @@
                         "Artboard2"
                     ]
                 }
+            },
+            {
+                "name": "efile_name",
+                "paths": {
+                    "PSD": "/path/to/psd",
+                    "Export": "/path/to/export",
+                    "Google Drive": "/path/to/drive"
+                },
+                "path_object": {
+                    "Main": {
+                        "start": "folder/text_layer",
+                        "end": "folder/text_layer"
+                    },
+                    "Layers": {
+                        "Supported": false,
+                        "Path": null
+                    }
+                },
+                "artboards": {
+                    "Supported": false,
+                    "Boards": null
+                }
             }
         ]
     }

@@ -13,10 +13,10 @@ class FileDetails:
             },
             "Layers": {
                 "Supported": bool(supported_artboards),
-                "Path": "" if not supported_artboards else path_object['Layers']['Path']
+                "Path": None if not supported_artboards else path_object['Layers']['Path']
             }
         } 
         self.artboards = {
             "Supported": bool(supported_artboards),
-            "Boards": supported_artboards
+            "Boards": None if not supported_artboards else supported_artboards
         }

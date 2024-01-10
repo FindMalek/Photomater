@@ -16,7 +16,7 @@ def update_file(name: str = typer.Option(..., prompt=True, help="Name of the cli
                 file: str = typer.Option(None, "--file", help="Name of the file to be updated.")):
 
     file_service = FileService()
-    #photoshop_controller = PhotoshopController()
+    photoshop_controller = PhotoshopController()
 
     client_data = file_service.get_client(name)
     if not client_data:
@@ -30,7 +30,6 @@ def update_file(name: str = typer.Option(..., prompt=True, help="Name of the cli
         file_data = file_service.get_client_file(name, file)
         artboards_supported = supports_artboards(file_data)
 
-      
         if artboards_supported:
             show_info_message(f"Updating all artboards in file '{file}' for client '{name}'.")
             show_update_details(name, file_data["name"], file_data['layer_path'], file_data['artboards'])
@@ -38,9 +37,10 @@ def update_file(name: str = typer.Option(..., prompt=True, help="Name of the cli
         else:
             show_info_message(f"Updating a single layer in file '{file}' for client '{name}'.")
             show_update_details(name, file_data["name"], file_data['layer_path'])
-            # #TODO: Add logic to update a single layer in the file
+
+            # TODO: Add logic to update a single layer in the file
             week_date = DateService.get_week_date()
-            print(week_date)
+            photoshop_controller.update_text_layer(name, file_data["name"], week_date)
 
         # Placeholder for actual Photoshop update logic
     else:

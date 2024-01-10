@@ -25,7 +25,7 @@ class FileService:
                     {
                         "name": file_data.get('name', ''),
                         "paths": file_data.get('paths', {}),
-                        "layer_path": file_data.get('layer_path', ''),
+                        "path_object": file_data.get('path_object', {"Main": {}, "Layers": {}}), 
                         "artboards": file_data.get('artboards', {})
                     } for file_data in client.files
                 ]
@@ -36,7 +36,7 @@ class FileService:
                 {
                     "name": file.name,
                     "paths": file.paths,
-                    "layer_path": file.layer_path,
+                    "path_object": file.path_object,
                     "artboards": file.artboards
                 } for file in client.files
             ]

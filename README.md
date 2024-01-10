@@ -60,16 +60,18 @@ Add a new client with their specific Photoshop file settings.
    * `--psd-path`: Full path to the client's PSD file.
    * `--export-path`: Path where exported files will be saved.
    * `--google-drive-path`: Google Drive path for the file.
-   * `--layer-path`: Path to the target text layer within the Photoshop file using regex.
+   * `--start-date-path`: Path to the start date text layer within the Photoshop file.
+   * `--end-date-path`: Path to the end date text layer within the Photoshop file.
    * `--supported-artboards`: Comma-separated names of the artboards to be processed.
 
 **Adding a Client Without Files**
 ```bash
-python main.py add-client "Client1"
+python main.py add-client --name "CLIENT_NAME"
 ```
-**Adding a Client Without Files**
+
+**Adding a Client With File Details**
 ```bash
-python main.py add-client "Client1" --file-name "File1" --psd-path "/path/to/psd1" --export-path "/path/to/export1" --google-drive-path "/path/to/drive1" --layer-path "Date - (Lundi|Mardi|Mercredi|Jeudi|Vendredi|Samedi|Dimanche) (EditText)" --supported-artboards "Artboard1,Artboard2"
+python main.py add-client --name "CLIENT_NAME" --file-name "FILE_NAME" --psd-path "/path/to/psd" --export-path "/path/to/export" --google-drive-path "/path/to/drive" --start-date-path "folder/text_layer" --end-date-path "folder/text_layer" --supported-artboards "Artboard1,Artboard2" --layer-path "Date - * (EditText)"
 ```
 
 #### 2. Edit Client
@@ -80,11 +82,14 @@ Edit an existing client's details.
    * `--new_name` (optional): New name for the client.
    * `--new_file_location`  (optional): New file location path.
    * `--new_export_location` (optional): New export location path.
-   * `--new_artboards` (optional): New artboard names, comma-separated.
-   * `--new_layer_path` (optional): New layer path.
+   * `--new_google_drive_location` (optional): New Google Drive path for the file.
+   * `--new_start_date_path ` (optional): New path for the start date text layer.
+   * `--new_end_date_path ` (optional): New path for the end date text layer.
+   * `--new_supported_artboards ` (optional): New artboard names, comma-separated.
 ```bash
-python main.py edit-client --name "Client1" --new_name "Client1Updated" --new_file_location "/new/path/to/psd"
+python main.py edit-client --name "CLIENT_NAME" --new_name "NEW_CLIENT_NAME" --new_file_location "/new/path/to/psd"
 ```
+
 #### 3. Remove Client
 Remove an existing client from the system.
 * Command: `remove-client`
@@ -135,17 +140,23 @@ Each client object consists of a name and a list of files associated with that c
    * `files`: An array of File objects.
 
 #### File Object
-Each file object within a client includes detailed information about the file, paths, artboards, and the text layer to be updated.
+Each file object within a client includes detailed information about the file, paths, artboards, and the text layers to be updated.
 
-   * `name`: The name of the file or project.
-   * `paths`: An object containing paths related to the file.
-      * `PSD`: The full path to the Photoshop (.psd) file.
-      * `Export`: A list of the names of the artboards to be processed.
-      * `Google Drive`: A list of the names of the artboards to be processed.
-   * `layer_path`: The regular expression `Date - (Lundi|Mardi|Mercredi|Jeudi|Vendredi|Samedi|Dimanche) (EditText)` is used. This regex will match strings like `Date - Lundi (EditText)`, `Date - Mardi (EditText)`, etc., where the day of the week is one of the specified artboard names.
-   * `artboards`: A list of the names of the artboards to be processed.
-      * `Supported`: A list of the names of the artboards to be processed.
-      * `boards`: A list of the names of the artboards to be processed.
+- `name`: The name of the file or project.
+- `paths`: An object containing paths related to the file.
+  - `PSD`: The full path to the Photoshop (.psd) file.
+  - `Export`: Path where exported files will be saved.
+  - `Google Drive`: Google Drive path for the file.
+- `path_object`: An object detailing the paths to the text layers.
+  - `Main`: Contains paths to the main date-related text layers.
+    - `start`: Path to the start date text layer.
+    - `end`: Path to the end date text layer.
+  - `Layers`: Contains information about additional layer paths.
+    - `Supported`: Boolean indicating if additional layers are supported.
+    - `Path`: The path to additional text layers, typically involving artboard names.
+- `artboards`: Information about the artboards to be processed.
+  - `Supported`: Boolean indicating if artboards are supported.
+  - `Boards`: A list of the names of the artboards to be processed.
 
 #### Example
 Here is an example of a client data structure:
@@ -160,7 +171,16 @@ Here is an example of a client data structure:
                 "Export": "/path/to/export/project1",
                 "Google Drive": "https://drive.google.com/drive/folders/project1"
             },
-            "layer_path": "Date - (Lundi|Mardi|Mercredi|Jeudi|Vendredi|Samedi|Dimanche) (EditText)",
+            "path_object": {
+                "Main": {
+                    "start": "Main/Text/Week Date/Start Date (EditText)",
+                    "end": "Main/Text/Week Date/End Date (EditText)"
+                },
+                "Layers": {
+                    "Supported": true,
+                    "Path": "Main/Text/Week Date/Date - * (EditText)"
+                }
+            },
             "artboards": {
                 "Supported": true,
                 "Boards": ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"]
@@ -173,7 +193,16 @@ Here is an example of a client data structure:
                 "Export": "/path/to/export/project2",
                 "Google Drive": "https://drive.google.com/drive/folders/project2"
             },
-            "layer_path": "Date - Weekly (EditText)",
+            "path_object": {
+                "Main": {
+                    "start": "Main/Text/Week Date/Start Date (EditText)",
+                    "end": "Main/Text/Week Date/End Date (EditText)"
+                },
+                "Layers": {
+                    "Supported": false,
+                    "Path": ""
+                }
+            },
             "artboards": {
                 "Supported": false,
                 "Boards": []
@@ -199,9 +228,11 @@ Photomater/
 │   │
 │   ├── models/                     # Data models
 │   │   ├── client_model.py         # Model for client data
+│   │   ├── file_model.py           # Model for file data
 │   │   └── layer_model.py          # Model for layer paths and related data
 │   │
 │   ├── services/                   # Services for specific tasks
+│   │   ├── date_service.py         # File handling all of the date specifications
 │   │   └── file_service.py         # File handling, read/write JSON, etc.
 │   │
 │   └── utils/                      # Utility functions and constants

@@ -1,5 +1,6 @@
 from app.services.file_service import FileService
-from app.models.client_model import Client, FileDetails
+from app.models.file_model import FileDetails
+from app.models.client_model import Client
 from app.utils.cli_utils import show_error_message, show_success_message
 
 class ClientController:
@@ -12,21 +13,18 @@ class ClientController:
 
         if client_found:
             for file_data in files_data:
-                file_name_exists = any(file['name'] == file_data['name'] for file in client_found['files'])
+                file_name_exists = any(file['name'].lower() == file_data['name'].lower() for file in client_found['files'])
                 if file_name_exists:
                     show_error_message(f"File name '{file_data['name']}' already exists in client '{name}'.")
                     return  
                 else:
-                    if file_data['artboards']['boards']:
-                        file_data['layer_path'] = file_data['layer_path'].replace("*", "(" + "|".join(file_data['artboards']['boards']) + ")")
-
                     new_file = FileDetails(
-                        name=file_data['name'],
+                        name=file_data['name'].lower(),
                         psd_path=file_data['paths']['PSD'],
                         export_path=file_data['paths']['Export'],
                         google_drive_path=file_data['paths']['Google Drive'],
-                        layer_path=file_data['layer_path'],
-                        supported_artboards=file_data['artboards']['boards']
+                        path_object=file_data['path_object'],
+                        supported_artboards=file_data['artboards']['Boards']
                     )
                     client_found['files'].append(new_file.__dict__)
                 updated_client = Client(name=name.lower(), files=client_found['files'])
@@ -34,12 +32,12 @@ class ClientController:
                 show_success_message(f"File '{file_data['name']}' added to client '{name}'.")
         else:
             files = [FileDetails(
-                        name=file['name'],
+                        name=file['name'].lower(),
                         psd_path=file['paths']['PSD'],
                         export_path=file['paths']['Export'],
                         google_drive_path=file['paths']['Google Drive'],
-                        layer_path=file['layer_path'],
-                        supported_artboards=file['artboards']['boards']
+                        path_object=file['path_object'],
+                        supported_artboards=file['artboards']['Boards']
                     ) for file in files_data] if files_data else []
             new_client = Client(name=name.lower(), files=files)
             self.file_service.add_client(new_client)

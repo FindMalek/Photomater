@@ -6,7 +6,9 @@ def add_client(name: str = typer.Option(..., prompt=True, help="Name of the clie
                psd_path: str = typer.Option(None, help="Full path to the client's PSD file."), 
                export_path: str = typer.Option(None, help="Path where exported files will be saved."), 
                google_drive_path: str = typer.Option(None, help="Google Drive path for the file."), 
-               layer_path: str = typer.Option(None, help="Path to the target text layer within the Photoshop file using regex."), 
+               layer_path: str = typer.Option(None, help="Path to the text layer."),
+               start_date_path: str = typer.Option(None, help="Path to the start date text layer."),
+               end_date_path: str = typer.Option(None, help="Path to the end date text layer."),
                supported_artboards: str = typer.Option(None, help="Comma-separated names of the artboards to be processed.")):
     """
     Adds a new client with specific Photoshop file settings to Photomater.
@@ -14,7 +16,18 @@ def add_client(name: str = typer.Option(..., prompt=True, help="Name of the clie
     client_controller = ClientController()
     files_data = []
 
-    if file_name and psd_path and export_path and google_drive_path and layer_path:
+    if file_name and psd_path and export_path and google_drive_path:
+        path_object = {
+            'Main': {
+                'start': start_date_path,
+                'end': end_date_path
+            },
+            'Layers': {
+                'Supported': bool(supported_artboards),
+                'Path': "" if not supported_artboards else layer_path
+            }
+        }
+
         file_data = {
             'name': file_name,
             'paths': {
@@ -22,9 +35,9 @@ def add_client(name: str = typer.Option(..., prompt=True, help="Name of the clie
                 'Export': export_path,
                 'Google Drive': google_drive_path
             },
-            'layer_path': layer_path,
+            'path_object': path_object,
             'artboards': {
-                'boards': supported_artboards.split(',') if supported_artboards else []
+                'Boards': supported_artboards.split(',') if supported_artboards else []
             }
         }
         files_data.append(file_data)

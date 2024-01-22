@@ -1,7 +1,7 @@
 from app.services.file_service import FileService
 from app.models.file_model import FileDetails
 from app.models.client_model import Client
-from app.utils.cli_utils import show_error_message, show_success_message
+from app.utils.cli_utils import show_error_message, show_success_message, show_warning_message, show_info_message
 
 class ClientController:
     def __init__(self):
@@ -13,7 +13,8 @@ class ClientController:
 
         if client_found:
             if not files_data:
-                show_error_message(f"Client '{name}' already exists. Did you mean to add new files?\nUse 'add-client --name {name} --file-name FILE_NAME ...'")
+                show_warning_message("No new files were added.")
+                show_info_message(f"If you want to add new files, please use the 'add-client --name {name} --file-name FILE_NAME args ...'")
                 return
 
             for file_data in files_data:

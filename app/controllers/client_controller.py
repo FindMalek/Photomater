@@ -12,6 +12,10 @@ class ClientController:
         client_found = next((client for client in existing_clients if client['name'].lower() == name.lower()), None)
 
         if client_found:
+            if not files_data:
+                show_error_message(f"Client '{name}' already exists. Did you mean to add new files?\nUse 'add-client --name {name} --file-name FILE_NAME ...'")
+                return
+
             for file_data in files_data:
                 file_name_exists = any(file['name'].lower() == file_data['name'].lower() for file in client_found['files'])
                 if file_name_exists:

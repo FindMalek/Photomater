@@ -34,7 +34,7 @@ def display_clients_table(clients):
 
     console.print(table)
 
-def show_update_details(client_name: str, file_name: str, layer_path: str, artboards=None):
+def show_update_details(client_name: str, file_name: str, path_object: str, artboards=None):
     """Displays detailed update information in a formatted panel."""
     details_text = Text()
 
@@ -46,8 +46,13 @@ def show_update_details(client_name: str, file_name: str, layer_path: str, artbo
     if artboards and artboards['Supported']:
         details_text.append("Artboards to be updated: ", style="bold blue")
         details_text.append(', '.join(artboards['Boards']) + "\n", style="bold")
+
+    elif path_object['Main']['start'] and path_object['Main']['end']:
+        details_text.append("Layer to be updated: ", style="bold blue")
+        details_text.append(path_object['Main']['start'] + ', ' + path_object['Main']['end'] + "\n", style="bold")
+
     else:
         details_text.append("Layer to be updated: ", style="bold blue")
-        details_text.append(layer_path + "\n", style="bold")
+        details_text.append(path_object['Path'] + "\n", style="bold")
 
     console.print(Panel(details_text, title="[bold blue]Update Details[/]", border_style="blue", box=box.ROUNDED))

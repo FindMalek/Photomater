@@ -1,11 +1,15 @@
 from app.services.file_service import FileService
+from app.controllers.photoshop_controller import PhotoshopController
+
 from app.models.file_model import FileDetails
 from app.models.client_model import Client
+
 from app.utils.cli_utils import show_error_message, show_success_message, show_warning_message, show_info_message
 
 class ClientController:
     def __init__(self):
         self.file_service = FileService()
+        self.photoshop_controller = PhotoshopController()
 
     def add_client(self, name, files_data=None):
         existing_clients = self.file_service.get_all_clients()
@@ -49,7 +53,7 @@ class ClientController:
             show_success_message(f"Client '{name}' added.")
 
     def edit_client(self, name, new_name=None, new_file_location=None, new_export_location=None, new_artboards=None, new_layer_path=None):
-        # Logic to edit an existing client
+        #TODO: Update this method to use the new FileDetails model
         updated_data = {
             "name": new_name,
             "file_location": new_file_location,
@@ -90,8 +94,22 @@ class ClientController:
     def update_client_files(self, client_name, all_files=False, specific_file=None, save=False, export=False):
         client_data = self.file_service.get_client(client_name)
         if client_data:
-            # Call PhotoshopController to perform updates
-            self.photoshop_controller.update_text_layers(client_data, all_files, specific_file, save, export)
-            return "Update process completed."
+            # @TODO Work on this method its wrong
+            outcome = self.photoshop_controller.update_text_layer(client_data, all_files, specific_file, save, export)
+            if outcome:
+                return "Update process completed."
+            else:
+                return "Update process failed."
         else:
             return "Client not found."
+        
+    def update_single_layer(self, file_data, week_date):
+        if not file_data or 'path_object' not in file_data:
+            show_error_message("File data is missing or incomplete.")
+            return
+
+        outcome = self.photoshop_controller.update_single_text_layer(file_data, week_date)
+        if outcome:
+            show_success_message(f"Layer in file '{file_data['name']}' updated successfully.")
+        else:
+            show_error_message(f"File '{file_data['name']}' could not be updated.")

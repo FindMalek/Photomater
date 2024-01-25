@@ -14,3 +14,9 @@ class DateService:
             "end": end.strftime("%d/%m"),
             "string": f"{start.strftime('%d/%m')} -> {end.strftime('%d/%m')}"
         }
+    
+    def getWeekPointer(week_date, layer_name):
+        if 'start' in layer_name.lower():
+            return week_date['start']
+        elif 'end' in layer_name.lower():
+            return week_date['end']

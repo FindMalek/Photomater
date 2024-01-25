@@ -108,13 +108,13 @@ python main.py list-clients
 
 #### 5. Update File
 Update text layers in Photoshop file, and then saves the Photoshop file.
-* Command: `update`
+* Command: `update-file`
 * Arguments:
    * `--client` (required): Name of the client.
    * `--all-files` (optional): Flag to process all files for the client.
    * `--file` (optional): Specify a single file name to process.
 ```bash
-python main.py update --client "Client1" --file "FileName"
+python main.py update-file --client "Client1" --file "FileName"
 ```
 
 #### 6. Export File
@@ -178,7 +178,7 @@ Here is an example of a client data structure:
                 },
                 "Layers": {
                     "Supported": true,
-                    "Path": "Main/Text/Week Date/Date - * (EditText)"
+                    "Path": "Main/Text/Week Date/(EditText)"
                 }
             },
             "artboards": {

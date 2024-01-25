@@ -1,6 +1,5 @@
 import typer
 from app.controllers.photoshop_controller import PhotoshopController
-from app.controllers.client_controller import ClientController
 
 from app.services.file_service import FileService
 from app.services.date_service import DateService
@@ -20,7 +19,6 @@ def update_file(client: str = typer.Option(..., prompt=True, help="Name of the c
     file_service = FileService()
 
     photoshop_controller = PhotoshopController()
-    client_controller = ClientController()
 
     client_data = file_service.get_client(client)
     if not client_data:
@@ -34,20 +32,23 @@ def update_file(client: str = typer.Option(..., prompt=True, help="Name of the c
     elif file:
         file_data = file_service.get_client_file(client, file)
         artboards_supported = supports_artboards(file_data)
+        week_date = DateService.get_week_date()
 
         if artboards_supported:
             show_info_message(f"Updating all artboards in file '{file}' for client '{client}' ...")
             show_update_details(client, file_data["name"], file_data['path_object']['Layers']['Path'], file_data['artboards'])
             # @TODO: Add logic to update all artboards in the file
+
         else:
             show_info_message(f"Updating a single layer in file '{file}' for client '{client}' ...")
             show_update_details(client, file_data["name"], file_data['path_object'])
 
-            # @TODO: Add logic to update a single layer in the file
-            week_date = DateService.get_week_date()
-            client_controller.update_single_layer(file_data, week_date)
+            outcome = photoshop_controller.update_single_text_layer(file_data, week_date)
+            if outcome:
+                show_success_message(f"Layer in file '{file_data['name']}' updated successfully.")
+            else:
+                show_error_message(f"File '{file_data['name']}' could not be updated.")
 
-        # Placeholder for actual Photoshop update logic
     else:
         show_error_message("Please specify either '--all-files' or '--file' argument.")
         raise typer.Exit(code=1)

@@ -102,14 +102,3 @@ class ClientController:
                 return "Update process failed."
         else:
             return "Client not found."
-        
-    def update_single_layer(self, file_data, week_date):
-        if not file_data or 'path_object' not in file_data:
-            show_error_message("File data is missing or incomplete.")
-            return
-
-        outcome = self.photoshop_controller.update_single_text_layer(file_data, week_date)
-        if outcome:
-            show_success_message(f"Layer in file '{file_data['name']}' updated successfully.")
-        else:
-            show_error_message(f"File '{file_data['name']}' could not be updated.")

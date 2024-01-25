@@ -74,12 +74,9 @@ class PhotoshopController:
                     show_info_message(f"Found layer: {target_layer.name}, Text: {target_layer.textItem.contents}")
 
                     target_layer.textItem.contents = DateService.getWeekPointer(week_date, target_layer.name)
-                    show_success_message(f"Updated layer text to: {week_date}")
-                    return True
-
                 else:
-                    show_warning_message(f"Target text layer not found for path: {layer_path}")
                     return False
+        return True
 
     @staticmethod
     def extract_layer_paths(path_object):

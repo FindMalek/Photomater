@@ -1,29 +1,59 @@
 [
-    {
-        "name": "moveu",
-        "files": [
-            {
-                "name": "weekly plan",
-                "paths": {
-                    "PSD": "C:\\Users\\malek\\Downloads\\Weekly Plan.psb",
-                    "Export": "C:\\Users\\malek\\Downloads\\",
-                    "Google Drive": "/path/to/drive"
-                },
-                "path_object": {
-                    "Main": {
-                        "start": "Date/Text/Start Date (EditText)",
-                        "end": "Date/Text/End Date (EditText)"
-                    },
-                    "Layers": {
-                        "Supported": false,
-                        "Path": null
-                    }
-                },
-                "artboards": {
-                    "Supported": false,
-                    "Boards": null
-                }
-            }
-        ]
-    }
+  {
+    "name": "moveu",
+    "files": [
+      {
+        "name": "weekly plan",
+        "paths": {
+          "PSD": "C:\\Users\\malek\\Downloads\\Weekly Plan.psb",
+          "Export": "C:\\Users\\malek\\Downloads\\",
+          "Google Drive": "/path/to/drive"
+        },
+        "path_object": {
+          "Main": {
+            "start": "Date/Text/Start Date (EditText)",
+            "end": "Date/Text/End Date (EditText)"
+          },
+          "Layers": {
+            "Supported": false,
+            "Path": null
+          }
+        },
+        "artboards": {
+          "Supported": false,
+          "Boards": null
+        }
+      },
+      {
+        "name": "daily plan",
+        "paths": {
+          "PSD": "C:\\Users\\malek\\Downloads\\Daily Plan.psb",
+          "Export": "C:\\Users\\malek\\Downloads\\",
+          "Google Drive": "/path/to/drive"
+        },
+        "path_object": {
+          "Main": {
+            "start": "Text/Week Date/Start Date (EditText)",
+            "end": "Text/Week Date/End Date (EditText)"
+          },
+          "Layers": {
+            "Supported": true,
+            "Path": "Date/Text/For texture/EditText"
+          }
+        },
+        "artboards": {
+          "Supported": true,
+          "Boards": [
+            "Lundi",
+            "Mardi",
+            "Mercredi",
+            "Jeudi",
+            "Vendredi",
+            "Samedi",
+            "Dimanche"
+          ]
+        }
+      }
+    ]
+  }
 ]

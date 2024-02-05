@@ -228,8 +228,7 @@ Photomater/
 │   │
 │   ├── models/                     # Data models
 │   │   ├── client_model.py         # Model for client data
-│   │   ├── file_model.py           # Model for file data
-│   │   └── layer_model.py          # Model for layer paths and related data
+│   │   └── file_model.py           # Model for file data
 │   │
 │   ├── services/                   # Services for specific tasks
 │   │   ├── date_service.py         # File handling all of the date specifications

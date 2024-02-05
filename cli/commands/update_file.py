@@ -37,13 +37,19 @@ def update_file(client: str = typer.Option(..., prompt=True, help="Name of the c
         if artboards_supported:
             show_info_message(f"Updating all artboards in file '{file}' for client '{client}' ...")
             show_update_details(client, file_data["name"], file_data['path_object']['Layers']['Path'], file_data['artboards'])
-            # @TODO: Add logic to update all artboards in the file
+            # @TODO: Add logic to update a single layer in each specified artboard
+
+            outcome = photoshop_controller.update_text_artboard(file_data, week_date)
+            if outcome:
+                show_success_message(f"All artboards in file '{file_data['name']}' updated successfully.")
+            else:
+                show_error_message(f"File '{file_data['name']}' could not be updated.")
 
         else:
             show_info_message(f"Updating a single layer in file '{file}' for client '{client}' ...")
             show_update_details(client, file_data["name"], file_data['path_object'])
 
-            outcome = photoshop_controller.update_single_text_layer(file_data, week_date)
+            outcome = photoshop_controller.update_text_layer(file_data, week_date)
             if outcome:
                 show_success_message(f"Layer in file '{file_data['name']}' updated successfully.")
             else:

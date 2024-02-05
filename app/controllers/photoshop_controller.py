@@ -7,34 +7,19 @@ class PhotoshopController:
     def __init__(self):
         self.file_service = FileService()
 
-    def update_text_layer(self, client_name, file_name, week_date):
-        print(f"Updating text layer in file '{file_name}' for client '{client_name}'.")
-        file_data = self.file_service.get_client_file(client_name, file_name)
-        layer_path = file_data['layer_path']
-
-        with Session() as ps:
-            document = ps.active_document
-            artboards = document.artboards
-            target_artboards = file_data['artboards']['Boards']
-
-            for artboard in artboards:
-                if artboard.name in target_artboards:
-                    show_info_message(f"Searching in artboard: {artboard.name}")
-                    target_layer = self.find_layer_recursive(artboard, layer_path.split())
-                    if target_layer and target_layer.kind == ps.LayerKind.TextLayer:
-                        show_info_message(f"Found layer: {target_layer.name}, Text: {target_layer.textItem.contents}")
-                        target_layer.textItem.contents = week_date
-                        show_success_message(f"Updated layer text to: {week_date}")
-                        break
-                    else:
-                        show_warning_message("Target text layer not found in artboard.")
-                        return False
-            else:
-                show_error_message("No matching artboard found.")
-                return False
-            
-        return True
-
+    @staticmethod
+    def extract_layer_paths(path_object):
+        """
+        Extracts layer paths from the path_object.
+        """
+        layer_paths = []
+        for key in path_object:
+            if key == "Layers" and path_object[key]["Supported"]:
+                layer_paths.append(path_object[key]["Path"])
+            elif key != "Layers":
+                layer_paths.extend(path_object[key].values())
+        return layer_paths
+    
     @staticmethod
     def find_layer_recursive(layer_set, target_path, current_path=[]):
         """
@@ -56,7 +41,34 @@ class PhotoshopController:
 
         return None
     
-    def update_single_text_layer(self, file_data, week_date):
+    def update_text_artboard(self, file_data, week_date):
+        if not file_data or 'path_object' not in file_data:
+            show_error_message("File data is missing or incomplete.")
+            return False
+
+        psd_path = file_data['paths']['PSD']
+        layer_path = file_data['path_object']['Layers']['Path'].split('/')
+        target_artboards = file_data['artboards']['Boards']
+
+        with Session(action=psd_path) as ps:
+            document = ps.active_document
+        
+            for artboard in document.layers:
+                if artboard.name in target_artboards:
+                    show_info_message(f"Searching in artboard: {artboard.name}")
+                    target_layer = self.find_layer_recursive(artboard, layer_path)
+                    if target_layer and target_layer.kind == ps.LayerKind.TextLayer:
+                        show_info_message(f"Found layer: {target_layer.name}, Text: {target_layer.textItem.contents}")
+                        # @TODO: Add logic to update the text layer
+                        # Create a function that gets the week pointer based on the layer name
+                        target_layer.textItem.contents = "00/90"
+                        show_success_message(f"Updated layer text to: {week_date}")
+                    else:
+                        show_warning_message("Target text layer not found in artboard.")
+                        return False
+        return True
+    
+    def update_text_layer(self, file_data, week_date):
         if not file_data or 'path_object' not in file_data:
             show_error_message("File data is missing or incomplete.")
             return
@@ -77,16 +89,3 @@ class PhotoshopController:
                 else:
                     return False
         return True
-
-    @staticmethod
-    def extract_layer_paths(path_object):
-        """
-        Extracts layer paths from the path_object.
-        """
-        layer_paths = []
-        for key in path_object:
-            if key == "Layers" and path_object[key]["Supported"]:
-                layer_paths.append(path_object[key]["Path"])
-            elif key != "Layers":
-                layer_paths.extend(path_object[key].values())
-        return layer_paths

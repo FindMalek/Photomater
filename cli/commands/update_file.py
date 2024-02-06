@@ -49,7 +49,7 @@ def update_file(client: str = typer.Option(..., prompt=True, help="Name of the c
             show_info_message(f"Updating a single layer in file '{file}' for client '{client}' ...")
             show_update_details(client, file_data["name"], file_data['path_object'])
 
-            outcome = photoshop_controller.update_text_layer(file_data, week_date)
+            outcome = photoshop_controller.update_weekdate_layers(file_data, week_date)
             if outcome:
                 show_success_message(f"Layer in file '{file_data['name']}' updated successfully.")
             else:

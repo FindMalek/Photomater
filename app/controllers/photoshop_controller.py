@@ -6,6 +6,24 @@ from app.utils.cli_utils import show_success_message, show_error_message, show_w
 class PhotoshopController:
     def __init__(self):
         self.file_service = FileService()
+        self.ps = None 
+
+    def open_document(self, psd_path):
+        self.ps = Session()
+        show_info_message(f"Opened document: {psd_path}")
+        return self.ps.app.load(psd_path)
+    
+    def close_session(self):
+        show_info_message("Closed Photoshop session.")
+        if self.ps:
+            self.ps.close()
+            self.ps = None
+
+    def update_layer_text(self, target_layer, text):
+        if target_layer and target_layer.kind == self.ps.LayerKind.TextLayer:
+            target_layer.textItem.contents = text
+            return True
+        return False
 
     @staticmethod
     def extract_layer_paths(path_object):
@@ -41,51 +59,43 @@ class PhotoshopController:
 
         return None
     
+    def update_text_in_artboard(self, artboard, layer_path, week_date):
+        target_layer = self.find_layer_recursive(artboard, layer_path)
+        if self.update_layer_text(target_layer, "69/70"):  # TODO: Replace "69/70" with dynamic text if needed
+            show_info_message(f"Updated '{artboard.name}', '{target_layer.name}' to: {week_date}")
+        else:
+            show_warning_message("Target text layer not found in artboard.")
+
     def update_text_artboard(self, file_data, week_date):
         if not file_data or 'path_object' not in file_data:
             show_error_message("File data is missing or incomplete.")
             return False
 
-        psd_path = file_data['paths']['PSD']
+        document = self.open_document(file_data['paths']['PSD'])
         layer_path = file_data['path_object']['Layers']['Path'].split('/')
         target_artboards = file_data['artboards']['Boards']
 
-        with Session() as ps:
-            document = ps.app.load(psd_path)
-        
-            for artboard in document.layers:
-                if artboard.name in target_artboards:
-                    show_info_message(f"Searching in artboard: {artboard.name}")
-                    target_layer = self.find_layer_recursive(artboard, layer_path)
-                    if target_layer and target_layer.kind == ps.LayerKind.TextLayer:
-                        show_info_message(f"Found layer: {target_layer.name}, Text: {target_layer.textItem.contents}")
-                        # @TODO: Add logic to update the text layer
-                        # Create a function that gets the week pointer based on the layer name
-                        target_layer.textItem.contents = "69/70"
-                        show_success_message(f"Updated layer text to: {week_date}")
-                    else:
-                        show_warning_message("Target text layer not found in artboard.")
-                        return False
+        for artboard in document.layers:
+            if artboard.name in target_artboards:
+                self.update_text_in_artboard(artboard, layer_path, week_date)
+
+        self.close_session()
         return True
     
-    def update_text_layer(self, file_data, week_date):
+    def update_weekdate_layers(self, file_data, week_date):
         if not file_data or 'path_object' not in file_data:
             show_error_message("File data is missing or incomplete.")
-            return
+            return False
 
-        psd_path = file_data['paths']['PSD']
-        path_object = file_data['path_object']
-        layer_paths = self.extract_layer_paths(path_object)
+        document = self.open_document(file_data['paths']['PSD'])
+        layer_paths = self.extract_layer_paths(file_data['path_object'])
 
-        with Session() as ps:
-            document = ps.app.load(psd_path)
-
-            for layer_path in layer_paths:
-                target_layer = self.find_layer_recursive(document, layer_path.split('/'))
-                if target_layer and target_layer.kind == ps.LayerKind.TextLayer:
-                    show_info_message(f"Found layer: {target_layer.name}, Text: {target_layer.textItem.contents}")
-
-                    target_layer.textItem.contents = DateService.getWeekPointer(week_date, target_layer.name)
-                else:
-                    return False
+        for layer_path in layer_paths:
+            target_layer = self.find_layer_recursive(document, layer_path.split('/'))
+            if self.update_layer_text(target_layer, DateService.getWeekPointer(week_date, target_layer.name)):
+                show_info_message(f"Updated '{target_layer.name}' layer text to: {week_date}")
+            else:
+                return False
+            
+        self.close_session()
         return True

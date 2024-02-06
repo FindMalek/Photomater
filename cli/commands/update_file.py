@@ -1,8 +1,7 @@
 import typer
-from app.controllers.photoshop_controller import PhotoshopController
 
 from app.services.file_service import FileService
-from app.services.date_service import DateService
+from app.controllers.photoshop_controller import PhotoshopController
 
 from app.utils.artboard_support import supports_artboards
 from app.utils.cli_utils import (
@@ -32,14 +31,13 @@ def update_file(client: str = typer.Option(..., prompt=True, help="Name of the c
     elif file:
         file_data = file_service.get_client_file(client, file)
         artboards_supported = supports_artboards(file_data)
-        week_date = DateService.get_week_date()
 
         if artboards_supported:
             show_info_message(f"Updating all artboards in file '{file}' for client '{client}' ...")
             show_update_details(client, file_data["name"], file_data['path_object']['Layers']['Path'], file_data['artboards'])
             # @TODO: Add logic to update a single layer in each specified artboard
 
-            outcome = photoshop_controller.update_text_artboard(file_data, week_date)
+            outcome = photoshop_controller.update_text_artboard(file_data)
             if outcome:
                 show_success_message(f"All artboards in file '{file_data['name']}' updated successfully.")
             else:
@@ -49,7 +47,7 @@ def update_file(client: str = typer.Option(..., prompt=True, help="Name of the c
             show_info_message(f"Updating a single layer in file '{file}' for client '{client}' ...")
             show_update_details(client, file_data["name"], file_data['path_object'])
 
-            outcome = photoshop_controller.update_weekdate_layers(file_data, week_date)
+            outcome = photoshop_controller.update_weekdate_layers(file_data)
             if outcome:
                 show_success_message(f"Layer in file '{file_data['name']}' updated successfully.")
             else:

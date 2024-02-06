@@ -1,11 +1,13 @@
 from photoshop import Session
 from app.services.file_service import FileService
 from app.services.date_service import DateService
-from app.utils.cli_utils import show_success_message, show_error_message, show_warning_message, show_info_message
+from app.utils.cli_utils import show_error_message, show_warning_message, show_info_message
 
 class PhotoshopController:
     def __init__(self):
         self.file_service = FileService()
+        self.date_service = DateService()
+        self.week_date = self.date_service.get_week_date()
         self.ps = None 
 
     def open_document(self, psd_path):
@@ -13,10 +15,17 @@ class PhotoshopController:
         show_info_message(f"Opened document: {psd_path}")
         return self.ps.app.load(psd_path)
     
+    def action_document(self, action):
+        """
+        Executes an action on the current Photoshop document.
+        For example: "Save" or "Export".
+        """
+
     def close_session(self):
         show_info_message("Closed Photoshop session.")
         if self.ps:
             self.ps.close()
+            self.ps.app.activeDocument.close()
             self.ps = None
 
     def update_layer_text(self, target_layer, text):
@@ -59,14 +68,17 @@ class PhotoshopController:
 
         return None
     
-    def update_text_in_artboard(self, artboard, layer_path, week_date):
+    def update_text_in_artboard(self, artboard, layer_path):
         target_layer = self.find_layer_recursive(artboard, layer_path)
-        if self.update_layer_text(target_layer, "69/70"):  # TODO: Replace "69/70" with dynamic text if needed
-            show_info_message(f"Updated '{artboard.name}', '{target_layer.name}' to: {week_date}")
+
+        artboard_date = self.date_service.getWeekDict(artboard.name, self.week_date)
+
+        if self.update_layer_text(target_layer, artboard_date[artboard.name]): 
+            show_info_message(f"Updated '{artboard.name}', '{target_layer.name}' to: {artboard_date[artboard.name]}")
         else:
             show_warning_message("Target text layer not found in artboard.")
 
-    def update_text_artboard(self, file_data, week_date):
+    def update_text_artboard(self, file_data):
         if not file_data or 'path_object' not in file_data:
             show_error_message("File data is missing or incomplete.")
             return False
@@ -77,12 +89,13 @@ class PhotoshopController:
 
         for artboard in document.layers:
             if artboard.name in target_artboards:
-                self.update_text_in_artboard(artboard, layer_path, week_date)
+                self.update_text_in_artboard(artboard, layer_path)
 
+        self.action_document(" WORK IN PROGRESS: Save and close document.")
         self.close_session()
         return True
     
-    def update_weekdate_layers(self, file_data, week_date):
+    def update_weekdate_layers(self, file_data):
         if not file_data or 'path_object' not in file_data:
             show_error_message("File data is missing or incomplete.")
             return False
@@ -92,10 +105,11 @@ class PhotoshopController:
 
         for layer_path in layer_paths:
             target_layer = self.find_layer_recursive(document, layer_path.split('/'))
-            if self.update_layer_text(target_layer, DateService.getWeekPointer(week_date, target_layer.name)):
-                show_info_message(f"Updated '{target_layer.name}' layer text to: {week_date}")
+            if self.update_layer_text(target_layer, DateService.getWeekPointer(self.week_date, target_layer.name)):
+                show_info_message(f"Updated '{target_layer.name}' layer text to: {self.week_date}")
             else:
                 return False
             
+        self.action_document(" WORK IN PROGRESS: Save and close document.")
         self.close_session()
         return True

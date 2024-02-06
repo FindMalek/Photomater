@@ -50,8 +50,8 @@ class PhotoshopController:
         layer_path = file_data['path_object']['Layers']['Path'].split('/')
         target_artboards = file_data['artboards']['Boards']
 
-        with Session(action=psd_path) as ps:
-            document = ps.active_document
+        with Session() as ps:
+            document = ps.app.load(psd_path)
         
             for artboard in document.layers:
                 if artboard.name in target_artboards:
@@ -61,7 +61,7 @@ class PhotoshopController:
                         show_info_message(f"Found layer: {target_layer.name}, Text: {target_layer.textItem.contents}")
                         # @TODO: Add logic to update the text layer
                         # Create a function that gets the week pointer based on the layer name
-                        target_layer.textItem.contents = "00/90"
+                        target_layer.textItem.contents = "69/70"
                         show_success_message(f"Updated layer text to: {week_date}")
                     else:
                         show_warning_message("Target text layer not found in artboard.")
@@ -77,8 +77,8 @@ class PhotoshopController:
         path_object = file_data['path_object']
         layer_paths = self.extract_layer_paths(path_object)
 
-        with Session(psd_path) as ps:
-            document = ps.active_document
+        with Session() as ps:
+            document = ps.app.load(psd_path)
 
             for layer_path in layer_paths:
                 target_layer = self.find_layer_recursive(document, layer_path.split('/'))

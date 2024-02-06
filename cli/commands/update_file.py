@@ -35,7 +35,6 @@ def update_file(client: str = typer.Option(..., prompt=True, help="Name of the c
         if artboards_supported:
             show_info_message(f"Updating all artboards in file '{file}' for client '{client}' ...")
             show_update_details(client, file_data["name"], file_data['path_object']['Layers']['Path'], file_data['artboards'])
-            # @TODO: Add logic to update a single layer in each specified artboard
 
             outcome = photoshop_controller.update_text_artboard(file_data)
             if outcome:

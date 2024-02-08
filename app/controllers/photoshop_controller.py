@@ -18,8 +18,14 @@ class PhotoshopController:
     def action_document(self, action):
         """
         Executes an action on the current Photoshop document.
-        For example: "Save" or "Export".
+        For example: "save" or "export".
         """
+        if action == "save":
+            self.ps.app.activeDocument.save()
+            show_info_message("Saved changes to document.")
+        elif action == "export":
+            self.ps.app.activeDocument.export()
+            show_info_message("Exported document.")
 
     def close_session(self):
         show_info_message("Closed Photoshop session.")
@@ -78,7 +84,7 @@ class PhotoshopController:
         else:
             show_warning_message("Target text layer not found in artboard.")
 
-    def update_text_artboard(self, file_data):
+    def update_text_artboard(self, file_data, action):
         if not file_data or 'path_object' not in file_data:
             show_error_message("File data is missing or incomplete.")
             return False
@@ -91,11 +97,11 @@ class PhotoshopController:
             if artboard.name in target_artboards:
                 self.update_text_in_artboard(artboard, layer_path)
 
-        self.action_document(" WORK IN PROGRESS: Save and close document.")
+        self.action_document(action)
         self.close_session()
         return True
     
-    def update_weekdate_layers(self, file_data):
+    def update_weekdate_layers(self, file_data, action):
         if not file_data or 'path_object' not in file_data:
             show_error_message("File data is missing or incomplete.")
             return False
@@ -110,6 +116,6 @@ class PhotoshopController:
             else:
                 return False
             
-        self.action_document(" WORK IN PROGRESS: Save and close document.")
+        self.action_document(action)
         self.close_session()
         return True

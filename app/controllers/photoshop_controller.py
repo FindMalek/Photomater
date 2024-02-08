@@ -41,16 +41,19 @@ class PhotoshopController:
         return False
 
     @staticmethod
-    def extract_layer_paths(path_object):
+    def extract_layer_paths(path_object, type):
         """
         Extracts layer paths from the path_object.
         """
         layer_paths = []
-        for key in path_object:
-            if key == "Layers" and path_object[key]["Supported"]:
-                layer_paths.append(path_object[key]["Path"])
-            elif key != "Layers":
-                layer_paths.extend(path_object[key].values())
+
+        if type == "artboard":
+            for key in path_object["Main"]:
+                layer_paths.append("Main/" + path_object["Main"][key])
+        elif type == "layer":
+            for key in path_object["Main"]:
+                layer_paths.append(path_object["Main"][key])
+
         return layer_paths
     
     @staticmethod
@@ -84,7 +87,15 @@ class PhotoshopController:
         else:
             show_warning_message("Target text layer not found in artboard.")
 
-    def update_text_artboard(self, file_data, action):
+    def update_weekdate_layers(self, document, layer_paths):
+        for layer_path in layer_paths:
+            target_layer = self.find_layer_recursive(document, layer_path.split('/'))
+            if self.update_layer_text(target_layer, DateService.getWeekPointer(self.week_date, target_layer.name)):
+                show_info_message(f"Updated '{target_layer.name}'.")
+            else:
+                return False
+
+    def update_type_artboard(self, file_data, action):
         if not file_data or 'path_object' not in file_data:
             show_error_message("File data is missing or incomplete.")
             return False
@@ -97,24 +108,22 @@ class PhotoshopController:
             if artboard.name in target_artboards:
                 self.update_text_in_artboard(artboard, layer_path)
 
+        layer_paths = self.extract_layer_paths(file_data['path_object'], "artboard")
+        self.update_weekdate_layers(document, layer_paths)
+
         self.action_document(action)
         self.close_session()
         return True
-    
-    def update_weekdate_layers(self, file_data, action):
+
+    def update_type_layer(self, file_data, action):
         if not file_data or 'path_object' not in file_data:
             show_error_message("File data is missing or incomplete.")
             return False
 
         document = self.open_document(file_data['paths']['PSD'])
-        layer_paths = self.extract_layer_paths(file_data['path_object'])
+        layer_paths = self.extract_layer_paths(file_data['path_object'], "layer")
 
-        for layer_path in layer_paths:
-            target_layer = self.find_layer_recursive(document, layer_path.split('/'))
-            if self.update_layer_text(target_layer, DateService.getWeekPointer(self.week_date, target_layer.name)):
-                show_info_message(f"Updated '{target_layer.name}' layer text to: {self.week_date}")
-            else:
-                return False
+        self.update_weekdate_layers(document, layer_paths)
             
         self.action_document(action)
         self.close_session()

@@ -14,7 +14,9 @@ from app.utils.cli_utils import (
 def update_file(client: str = typer.Option(..., prompt=True, help="Name of the client."),
                 all_files: bool = typer.Option(False, "--all-files", help="Update all files for the client."),
                 file: str = typer.Option(None, "--file", help="Name of the file to be updated.")):
-
+    """
+    Update text layers in Photoshop file(s) for the specified client.
+    """
     file_service = FileService()
 
     photoshop_controller = PhotoshopController()

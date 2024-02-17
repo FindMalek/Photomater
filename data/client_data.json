@@ -1,59 +1,67 @@
 [
-  {
-    "name": "moveu",
-    "files": [
-      {
-        "name": "weekly plan",
-        "paths": {
-          "PSD": "C:\\Users\\malek\\Downloads\\Weekly Plan.psb",
-          "Export": "C:\\Users\\malek\\Downloads\\",
-          "Google Drive": "/path/to/drive"
-        },
-        "path_object": {
-          "Main": {
-            "start": "Date/Text/Start Date (EditText)",
-            "end": "Date/Text/End Date (EditText)"
-          },
-          "Layers": {
-            "Supported": false,
-            "Path": null
-          }
-        },
-        "artboards": {
-          "Supported": false,
-          "Boards": null
-        }
-      },
-      {
-        "name": "daily plan",
-        "paths": {
-          "PSD": "C:\\Users\\malek\\Downloads\\Daily Plan.psb",
-          "Export": "C:\\Users\\malek\\Downloads\\",
-          "Google Drive": "/path/to/drive"
-        },
-        "path_object": {
-          "Main": {
-            "start": "Text/Week Date/Start Date (EditText)",
-            "end": "Text/Week Date/End Date (EditText)"
-          },
-          "Layers": {
-            "Supported": true,
-            "Path": "Date/Text/For texture/EditText"
-          }
-        },
-        "artboards": {
-          "Supported": true,
-          "Boards": [
-            "Lundi",
-            "Mardi",
-            "Mercredi",
-            "Jeudi",
-            "Vendredi",
-            "Samedi",
-            "Dimanche"
-          ]
-        }
-      }
-    ]
-  }
+    {
+        "name": "moveu",
+        "files": [
+            {
+                "name": "daily plan",
+                "paths": {
+                    "PSD": "D:\\Documents\\Graphic Design Packs\\Move U\\Daily Plan\\New Daily Plan (Posters).psb",
+                    "Export": "D:\\Documents\\Graphic Design Packs\\Move U\\Daily Plan\\Results\\Posters",
+                    "Google Drive": "https://drive.google.com/drive/folders/1qp5VvorPraawRaWx_XHn8RRKBnKhApRB?usp=drive_link"
+                },
+                "path_object": {
+                    "Main": {
+                        "start": "Text/Date/Text/Start Date (EditText)",
+                        "end": "Text/Date/Text/End Date (EditText)"
+                    },
+                    "Layers": {
+                        "Supported": true,
+                        "Path": "Date/Text/EditText"
+                    }
+                },
+                "artboards": {
+                    "Supported": true,
+                    "Boards": [
+                        "Lundi",
+                        "Mardi",
+                        "Mercredi",
+                        "Jeudi",
+                        "Vendredi",
+                        "Samedi",
+                        "Dimanche"
+                    ]
+                }
+            },
+            {
+                "name": "daily plan stories",
+                "paths": {
+                    "PSD": "D:\\Documents\\Graphic Design Packs\\Move U\\Daily Plan\\New Daily Plan (Stories).psb",
+                    "Export": "D:\\Documents\\Graphic Design Packs\\Move U\\Daily Plan\\Results\\Stories",
+                    "Google Drive": "https://drive.google.com/drive/folders/1qsh0Rc_Mu-9egPFfwnql-BCdspH2SSgh?usp=drive_link"
+                },
+                "path_object": {
+                    "Main": {
+                        "start": "Text/Date/Text/Start Date (EditText)",
+                        "end": "Text/Date/Text/End Date (EditText)"
+                    },
+                    "Layers": {
+                        "Supported": true,
+                        "Path": "Date/Text/EditText"
+                    }
+                },
+                "artboards": {
+                    "Supported": true,
+                    "Boards": [
+                        "Lundi",
+                        "Mardi",
+                        "Mercredi",
+                        "Jeudi",
+                        "Vendredi",
+                        "Samedi",
+                        "Dimanche"
+                    ]
+                }
+            }
+        ]
+    }
 ]

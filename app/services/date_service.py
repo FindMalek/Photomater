@@ -9,13 +9,18 @@ class DateService:
         }
 
     def get_week_date(self):
-        start = self.date - datetime.timedelta(days=self.date.weekday())
-        end = start + datetime.timedelta(days=6)
+        if self.date.weekday() >= 4:  
+            days_until_next_monday = 7 - self.date.weekday()
+            start_of_next_week = self.date + datetime.timedelta(days=days_until_next_monday)
+        else:
+            start_of_next_week = self.date - datetime.timedelta(days=self.date.weekday())
+
+        end_of_next_week = start_of_next_week + datetime.timedelta(days=6)
 
         return {
-            "start": start.strftime("%d/%m"),
-            "end": end.strftime("%d/%m"),
-            "string": f"{start.strftime('%d/%m')} -> {end.strftime('%d/%m')}"
+            "start": start_of_next_week.strftime("%d/%m"),
+            "end": end_of_next_week.strftime("%d/%m"),
+            "string": f"{start_of_next_week.strftime('%d/%m')} -> {end_of_next_week.strftime('%d/%m')}"
         }
     
     def getWeekPointer(week_date, layer_name):

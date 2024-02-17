@@ -18,7 +18,6 @@ def update_file(client: str = typer.Option(..., prompt=True, help="Name of the c
     Update text layers in Photoshop file(s) for the specified client.
     """
     file_service = FileService()
-
     photoshop_controller = PhotoshopController()
 
     client_data = file_service.get_client(client)
@@ -27,8 +26,32 @@ def update_file(client: str = typer.Option(..., prompt=True, help="Name of the c
         raise typer.Exit(code=1)
 
     if all_files:
-        # @TODO: Add logic to update all files for the specified client 
         show_info_message(f"Updating all files for client '{client}' ...")
+        client_files = file_service.get_client_files(client)
+
+        for file in client_files:
+            file_data = file_service.get_client_file(client, file['name'])
+            artboards_supported = supports_artboards(file_data)
+
+            if artboards_supported:
+                show_info_message(f"Updating all artboards in file '{file['name']}' for client '{client}' ...")
+                show_update_details(client, file_data["name"], file_data['path_object']['Layers']['Path'], file_data['artboards'])
+
+                outcome = photoshop_controller.update_type_artboard(file_data, "save")
+                if outcome:
+                    show_success_message(f"All artboards in file '{file_data['name']}' updated successfully.")
+                else:
+                    show_error_message(f"File '{file_data['name']}' could not be updated.")
+
+            else:
+                show_info_message(f"Updating a single layer in file '{file['name']}' for client '{client}' ...")
+                show_update_details(client, file_data["name"], file_data['path_object'])
+
+                outcome = photoshop_controller.update_type_layer(file_data, "save")
+                if outcome:
+                    show_success_message(f"Layer in file '{file_data['name']}' updated successfully.")
+                else:
+                    show_error_message(f"File '{file_data['name']}' could not be updated.")
 
     elif file:
         file_data = file_service.get_client_file(client, file)

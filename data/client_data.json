@@ -1,67 +1,67 @@
 [
-    {
-        "name": "moveu",
-        "files": [
-            {
-                "name": "daily plan",
-                "paths": {
-                    "PSD": "D:\\Documents\\Graphic Design Packs\\Move U\\Daily Plan\\New Daily Plan (Posters).psb",
-                    "Export": "D:\\Documents\\Graphic Design Packs\\Move U\\Daily Plan\\Results\\Posters",
-                    "Google Drive": "https://drive.google.com/drive/folders/1qp5VvorPraawRaWx_XHn8RRKBnKhApRB?usp=drive_link"
-                },
-                "path_object": {
-                    "Main": {
-                        "start": "Text/Date/Text/Start Date (EditText)",
-                        "end": "Text/Date/Text/End Date (EditText)"
-                    },
-                    "Layers": {
-                        "Supported": true,
-                        "Path": "Date/Text/EditText"
-                    }
-                },
-                "artboards": {
-                    "Supported": true,
-                    "Boards": [
-                        "Lundi",
-                        "Mardi",
-                        "Mercredi",
-                        "Jeudi",
-                        "Vendredi",
-                        "Samedi",
-                        "Dimanche"
-                    ]
-                }
-            },
-            {
-                "name": "daily plan stories",
-                "paths": {
-                    "PSD": "D:\\Documents\\Graphic Design Packs\\Move U\\Daily Plan\\New Daily Plan (Stories).psb",
-                    "Export": "D:\\Documents\\Graphic Design Packs\\Move U\\Daily Plan\\Results\\Stories",
-                    "Google Drive": "https://drive.google.com/drive/folders/1qsh0Rc_Mu-9egPFfwnql-BCdspH2SSgh?usp=drive_link"
-                },
-                "path_object": {
-                    "Main": {
-                        "start": "Text/Date/Text/Start Date (EditText)",
-                        "end": "Text/Date/Text/End Date (EditText)"
-                    },
-                    "Layers": {
-                        "Supported": true,
-                        "Path": "Date/Text/EditText"
-                    }
-                },
-                "artboards": {
-                    "Supported": true,
-                    "Boards": [
-                        "Lundi",
-                        "Mardi",
-                        "Mercredi",
-                        "Jeudi",
-                        "Vendredi",
-                        "Samedi",
-                        "Dimanche"
-                    ]
-                }
-            }
-        ]
-    }
+  {
+    "name": "moveu",
+    "files": [
+      {
+        "name": "daily plan posters",
+        "paths": {
+          "PSD": "D:\\Documents\\Graphic Design Packs\\Move U\\Daily Plan\\New Daily Plan (Posters).psb",
+          "Export": "D:\\Documents\\Graphic Design Packs\\Move U\\Daily Plan\\Results\\Posters",
+          "Google Drive": "https://drive.google.com/drive/folders/1qp5VvorPraawRaWx_XHn8RRKBnKhApRB?usp=drive_link"
+        },
+        "path_object": {
+          "Main": {
+            "start": "Text/Date/Text/Start Date (EditText)",
+            "end": "Text/Date/Text/End Date (EditText)"
+          },
+          "Layers": {
+            "Supported": true,
+            "Path": "Date/Text/EditText"
+          }
+        },
+        "artboards": {
+          "Supported": true,
+          "Boards": [
+            "Lundi",
+            "Mardi",
+            "Mercredi",
+            "Jeudi",
+            "Vendredi",
+            "Samedi",
+            "Dimanche"
+          ]
+        }
+      },
+      {
+        "name": "daily plan stories",
+        "paths": {
+          "PSD": "D:\\Documents\\Graphic Design Packs\\Move U\\Daily Plan\\New Daily Plan (Stories).psb",
+          "Export": "D:\\Documents\\Graphic Design Packs\\Move U\\Daily Plan\\Results\\Stories",
+          "Google Drive": "https://drive.google.com/drive/folders/1qsh0Rc_Mu-9egPFfwnql-BCdspH2SSgh?usp=drive_link"
+        },
+        "path_object": {
+          "Main": {
+            "start": "Text/Date/Text/Start Date (EditText)",
+            "end": "Text/Date/Text/End Date (EditText)"
+          },
+          "Layers": {
+            "Supported": true,
+            "Path": "Date/Text/EditText"
+          }
+        },
+        "artboards": {
+          "Supported": true,
+          "Boards": [
+            "Lundi",
+            "Mardi",
+            "Mercredi",
+            "Jeudi",
+            "Vendredi",
+            "Samedi",
+            "Dimanche"
+          ]
+        }
+      }
+    ]
+  }
 ]

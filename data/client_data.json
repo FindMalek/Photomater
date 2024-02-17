@@ -7,7 +7,7 @@
         "paths": {
           "PSD": "D:\\Documents\\Graphic Design Packs\\Move U\\Daily Plan\\New Daily Plan (Posters).psb",
           "Export": "D:\\Documents\\Graphic Design Packs\\Move U\\Daily Plan\\Results\\Posters",
-          "Google Drive": "https://drive.google.com/drive/folders/1qp5VvorPraawRaWx_XHn8RRKBnKhApRB?usp=drive_link"
+          "Google Drive": "https://drive.google.com/drive/folders/138vlYfIpiPhSKfV_iVNXcxUC1PUcjjXn?usp=sharing"
         },
         "path_object": {
           "Main": {
@@ -37,7 +37,7 @@
         "paths": {
           "PSD": "D:\\Documents\\Graphic Design Packs\\Move U\\Daily Plan\\New Daily Plan (Stories).psb",
           "Export": "D:\\Documents\\Graphic Design Packs\\Move U\\Daily Plan\\Results\\Stories",
-          "Google Drive": "https://drive.google.com/drive/folders/1qsh0Rc_Mu-9egPFfwnql-BCdspH2SSgh?usp=drive_link"
+          "Google Drive": "https://drive.google.com/drive/folders/13UCV2PQwJ7aKcbEuBNqqvxBcSWGQmabS?usp=sharing"
         },
         "path_object": {
           "Main": {
@@ -60,6 +60,113 @@
             "Samedi",
             "Dimanche"
           ]
+        }
+      },
+      {
+        "name": "weekly plan",
+        "paths": {
+          "PSD": "D:\\Documents\\Graphic Design Packs\\Move U\\Weekly Plan\\Weekly Plan.psb",
+          "Export": "G:\\My Drive\\Projects\\Move U\\Weekly Plan\\Result",
+          "Google Drive": "https://drive.google.com/file/d/1xgWJxo3sJdyOSolphi6NjZzBoFuW0N7y/view"
+        },
+        "path_object": {
+          "Main": {
+            "start": "Date/Text/Start Date (EditText)",
+            "end": "Date/Text/End Date (EditText)"
+          },
+          "Layers": {
+            "Supported": false,
+            "Path": null
+          }
+        },
+        "artboards": {
+          "Supported": false,
+          "Boards": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "fitforme",
+    "files": [
+      {
+        "name": "daily plan posters",
+        "paths": {
+          "PSD": "D:\\Documents\\Graphic Design Packs\\FitForme\\Daily Planning\\Daily Plan (Poster).psb",
+          "Export": "G:\\My Drive\\Projects\\FitForme\\Daily Planning\\Results\\Poster Ready",
+          "Google Drive": "https://drive.google.com/drive/folders/1qp5VvorPraawRaWx_XHn8RRKBnKhApRB?usp=drive_link"
+        },
+        "path_object": {
+          "Main": {
+            "start": "Text/Date/Text/Start Date (EditText)",
+            "end": "Text/Date/Text/End Date (EditText)"
+          },
+          "Layers": {
+            "Supported": true,
+            "Path": "Date/EditText"
+          }
+        },
+        "artboards": {
+          "Supported": true,
+          "Boards": [
+            "Lundi",
+            "Mardi",
+            "Mercredi",
+            "Jeudi",
+            "Vendredi",
+            "Samedi"
+          ]
+        }
+      },
+      {
+        "name": "daily plan stories",
+        "paths": {
+          "PSD": "D:\\Documents\\Graphic Design Packs\\FitForme\\Daily Planning\\Daily Plan (Story).psb",
+          "Export": "G:\\My Drive\\Projects\\FitForme\\Daily Planning\\Results\\Story",
+          "Google Drive": "https://drive.google.com/drive/folders/1qsh0Rc_Mu-9egPFfwnql-BCdspH2SSgh"
+        },
+        "path_object": {
+          "Main": {
+            "start": "Text/Date/Text/Start Date (EditText)",
+            "end": "Text/Date/Text/End Date (EditText)"
+          },
+          "Layers": {
+            "Supported": true,
+            "Path": "Date/EditText"
+          }
+        },
+        "artboards": {
+          "Supported": true,
+          "Boards": [
+            "Lundi",
+            "Mardi",
+            "Mercredi",
+            "Jeudi",
+            "Vendredi",
+            "Samedi"
+          ]
+        }
+      },
+      {
+        "name": "weekly plan",
+        "paths": {
+          "PSD": "D:\\Documents\\Graphic Design Packs\\FitForme\\Planning Activit\u00e9s\\Planning d'Activit\u00e9s.psd",
+          "Export": "G:\\My Drive\\Projects\\FitForme\\Planning Activit\u00e9s\\Result",
+          "Google Drive": "https://drive.google.com/file/d/1UQt0yGOPXaAjGX-WErG17uQimyHjzWm3/view"
+        },
+        "path_object": {
+          "Main": {
+            "start": "Week/Date/Start Date (EditText)",
+            "end": "Week/Date/End Date (EditText)"
+          },
+          "Layers": {
+            "Supported": false,
+            "Path": null
+          }
+        },
+        "artboards": {
+          "Supported": false,
+          "Boards": null
         }
       }
     ]

@@ -88,7 +88,6 @@ class PhotoshopController:
             show_warning_message("Target text layer not found in artboard.")
 
     def update_weekdate_layers(self, document, layer_paths):
-        # FIXME: Add warning message if layer not found.
         for layer_path in layer_paths:
             target_layer = self.find_layer_recursive(document, layer_path.split('/'))
 

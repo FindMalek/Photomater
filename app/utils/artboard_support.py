@@ -12,3 +12,7 @@ def get_artboards(file_data):
     if "artboards" in file_data and file_data["artboards"]["Supported"]:
         return file_data["artboards"].get("Boards", [])
     return []
+
+def hide_all_layers(layers):
+    for layer in layers:
+        layer.visible = False

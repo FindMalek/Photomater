@@ -1,4 +1,6 @@
+import os
 import json
+
 from app.models.client_model import Client
 
 class FileService:
@@ -90,3 +92,6 @@ class FileService:
     def get_client_files(self, name):
         client = self.get_client(name)
         return client['files'] if client else None
+    
+    def get_exported_path(self, folder, file_name):
+        return os.path.join(folder, file_name)

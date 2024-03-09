@@ -1,6 +1,8 @@
 from photoshop import Session
+
 from app.services.file_service import FileService
 from app.services.date_service import DateService
+from app.utils.artboard_support import hide_all_layers
 from app.utils.cli_utils import show_error_message, show_warning_message, show_info_message
 
 class PhotoshopController:
@@ -9,23 +11,38 @@ class PhotoshopController:
         self.date_service = DateService()
         self.week_date = self.date_service.get_week_date()
         self.ps = None 
+        self.document = None
 
     def open_document(self, psd_path):
         self.ps = Session()
         show_info_message(f"Opened document: {psd_path}")
         return self.ps.app.load(psd_path)
     
-    def action_document(self, action):
+    def action_document(self, document=None, layer=None, export_path="", action="save"):
         """
         Executes an action on the current Photoshop document.
         For example: "save" or "export".
         """
+
         if action == "save":
             self.ps.app.activeDocument.save()
             show_info_message("Saved changes to document.")
         elif action == "export":
-            self.ps.app.activeDocument.export()
-            show_info_message("Exported document.")
+            if(layer is not None):
+                options = self.ps.PNGSaveOptions()
+                options.compression = 1
+                hide_all_layers(document.layers)
+                layer.visible = True
+                options.artboard_range = layer.name
+                export_path = self.file_service.get_exported_path(export_path, layer.name)
+                document.saveAs(export_path, options=options)
+                show_info_message("Exported artboard.")
+            else:
+                export_path = self.file_service.get_exported_path(export_path, document.name)
+                options = self.ps.PNGSaveOptions()
+                options.compression = 1
+                document.saveAs(export_path, options=options)
+                show_info_message("Exported document.")
 
     def close_session(self):
         show_info_message("Closed Photoshop session.")
@@ -65,7 +82,6 @@ class PhotoshopController:
             return None
 
         next_layer_name = target_path[0]
-
         for layer in layer_set.layers:
             new_path = current_path + [layer.name]
 
@@ -103,17 +119,25 @@ class PhotoshopController:
             return False
 
         document = self.open_document(file_data['paths']['PSD'])
+        self.document = document
         layer_path = file_data['path_object']['Layers']['Path'].split('/')
         target_artboards = file_data['artboards']['Boards']
 
         for artboard in document.layers:
             if artboard.name in target_artboards:
                 self.update_text_in_artboard(artboard, layer_path)
+                if (action == "export"):
+                    self.action_document(document=document, layer=artboard, export_path=file_data["paths"]["Export"], action=action)
 
         layer_paths = self.extract_layer_paths(file_data['path_object'], "artboard")
         self.update_weekdate_layers(document, layer_paths)
 
-        self.action_document(action)
+        if (action == "export"):
+            for layer in document.layers:
+                if layer.name == "Main":
+                    self.action_document(document=document, layer=layer, export_path=file_data["paths"]["Export"], action=action)
+
+        self.action_document("save")
         self.close_session()
         return True
 
@@ -126,7 +150,9 @@ class PhotoshopController:
         layer_paths = self.extract_layer_paths(file_data['path_object'], "layer")
 
         self.update_weekdate_layers(document, layer_paths)
-            
-        self.action_document(action)
+        if (action == "export"):
+           self.action_document(document=document, export_path=file_data["paths"]["Export"], action=action)
+
+        self.action_document("save")
         self.close_session()
         return True
